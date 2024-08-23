@@ -1,115 +1,6 @@
-// import 'package:flutter/material.dart';
-// import 'package:web_admin_car/gen/assets.gen.dart';
-// import 'package:web_admin_car/pages/home/widget/dashboard_list_tile.dart';
-// import 'package:web_admin_car/pages/manage_seller/product/product.dart';
-// import 'package:web_admin_car/resources/app_color.dart';
-
-// class SideMenu extends StatelessWidget {
-//   const SideMenu({
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     const double defaultPadding = 16.0;
-//     return Container(
-//       padding: const EdgeInsets.symmetric(
-//           horizontal: defaultPadding, vertical: defaultPadding * 3),
-//       decoration: const BoxDecoration(
-//           color: AppColor.secondaryColor,
-//           borderRadius: BorderRadius.all(Radius.circular(30))),
-//       child: Column(
-//         children: [
-//           SizedBox(
-//             height: 80.0,
-//             child: DrawerHeader(
-//               padding: const EdgeInsets.only(left: defaultPadding * 1.5),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: [
-//                   Row(
-//                     children: [
-//                       CircleAvatar(
-//                         child: Image.asset('assets/images/Autocarlogo.png'),
-//                       ),
-//                       const SizedBox(width: 5.0),
-//                       const Text(
-//                         'data',
-//                         style: TextStyle(color: AppColor.white),
-//                       ),
-//                     ],
-//                   ),
-//                   const Text(
-//                     'Main Menu',
-//                     style: TextStyle(color: AppColor.white),
-//                   )
-//                 ],
-//               ),
-//             ),
-//           ),
-//           const SizedBox(height: defaultPadding),
-//           // Stack(
-//           //   children: [
-//           //     Positioned.fill(
-//           //         child: Expanded(
-//           //       child: Container(
-//           //           decoration: const BoxDecoration(
-//           //               color: Colors.blue,
-//           //               borderRadius: BorderRadius.all(
-//           //                   Radius.circular(10.0)))),
-//           //     )),
-//           //     DashboardListTile(
-//           //       tiltle: 'Home',
-//           //       onPress: () {},
-//           //       svgAssetPath:
-//           //           Assets.icons.contentViewThumbnailsIcon,
-//           //     ),
-//           //   ],
-//           // ),
-
-//           DashboardListTile(
-//             tiltle: 'Profile',
-//             onPress: () {},
-//             svgAssetPath: Assets.icons.registrationIcon,
-//           ),
-//           DashboardListTile(
-//             tiltle: 'Product',
-//             onPress: () {},
-//             svgAssetPath: Assets.icons.boxPackageIcon,
-//           ),
-//           DashboardListTile(
-//             tiltle: 'Category',
-//             onPress: () {
-//               // Navigator.push(context,
-//               //     MaterialPageRoute(builder: (context) => const Product()));
-//             },
-//             svgAssetPath: Assets.icons.categoryIcon,
-//           ),
-//           DashboardListTile(
-//             tiltle: 'Order',
-//             onPress: () {},
-//             svgAssetPath: Assets.icons.fileLineIcon,
-//           ),
-//           DashboardListTile(
-//             tiltle: 'Settings',
-//             onPress: () {},
-//             svgAssetPath: Assets.icons.settingLineIcon,
-//           ),
-//           const Spacer(),
-//           DashboardListTile(
-//             tiltle: 'Logout',
-//             onPress: () {},
-//             svgAssetPath: Assets.icons.logoutLineIcon,
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:web_admin_car/gen/assets.gen.dart';
+import 'package:web_admin_car/pages/home_page_main.dart';
 import 'package:web_admin_car/pages/home/widget/dashboard_list_tile.dart';
 import 'package:web_admin_car/pages/manage_seller/category/category_page.dart';
 import 'package:web_admin_car/pages/manage_seller/product/product.dart';
@@ -137,6 +28,13 @@ class SideMenu extends StatelessWidget {
         children: [
           const AvataAndTitle(defaultPadding: defaultPadding),
           const SizedBox(height: defaultPadding),
+          DashboardListTile(
+            tiltle: 'Home',
+            onPress: () {
+              onMenuItemPressed(const HomePageMain());
+            },
+            svgAssetPath: Assets.icons.contentViewThumbnailsIcon,
+          ),
           DashboardListTile(
             tiltle: 'Profile',
             onPress: () {

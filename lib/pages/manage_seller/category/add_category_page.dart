@@ -41,9 +41,6 @@ class AddCategory extends StatelessWidget {
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 20.0),
                                         child: Column(
-                                          // mainAxisAlignment:
-                                          //     MainAxisAlignment
-                                          //         .start,
                                           children: [
                                             SizedBox(height: 25.0),
                                             Align(
@@ -111,7 +108,7 @@ class AddCategory extends StatelessWidget {
               },
             );
           },
-          text: 'Add New Category',
+          text: 'Add Category',
           color: AppColor.blue,
           borderColor: AppColor.white,
         ),

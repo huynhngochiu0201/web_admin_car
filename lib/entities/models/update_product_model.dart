@@ -10,8 +10,7 @@ class UpdateProductModel {
   final String? productName;
   final double? price;
   final String? description;
-  final int minSize;
-  final int maxSize;
+
   final int quantity;
   final html.File? image;
 
@@ -21,8 +20,6 @@ class UpdateProductModel {
     this.productName,
     this.price,
     this.description,
-    required this.minSize,
-    required this.maxSize,
     required this.quantity,
     this.image,
   });
@@ -33,7 +30,6 @@ class UpdateProductModel {
       'name': productName,
       'price': price,
       'description': description,
-      'sizes': List.generate(maxSize - minSize + 1, (index) => minSize + index),
       'quantity': quantity,
       'createAt': Timestamp.now(),
     };
