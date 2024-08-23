@@ -1,60 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:web_admin_car/components/button/cr_elevated_button.dart';
-import 'package:web_admin_car/components/snack_bar/show_snack_bar.dart';
 import 'package:web_admin_car/components/text_field/cr_text_field.dart';
 import 'package:web_admin_car/components/text_field/cr_text_field_password.dart';
-import 'package:web_admin_car/pages/home/home_page.dart';
 import 'package:web_admin_car/resources/app_color.dart';
 import 'package:web_admin_car/services/auth_services.dart';
 import 'package:web_admin_car/utils/validator.dart';
 
-class LoginPages extends StatefulWidget {
-  const LoginPages({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPages> createState() => _LoginPagesState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPagesState extends State<LoginPages> {
+class _RegisterPageState extends State<RegisterPage> {
+  TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  FocusNode nameFocus = FocusNode();
+  bool isChecked = false;
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
   final AuthService authMethod = AuthService(); // Initialize AuthService
 
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-
-  void loginUser() async {
-    if (!formKey.currentState!.validate()) {
-      return;
-    }
-
-    setState(() {
-      isLoading = true;
-    });
-
-    String res = await AuthService().loginUser(
-        email: emailController.text, password: passwordController.text);
-
-    if (res == "success") {
+  void signUp() async {
+    if (formKey.currentState!.validate()) {
       setState(() {
-        isLoading = false;
+        isLoading = true;
       });
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const HomePage(),
-        ),
+
+      String res = await authMethod.signupUser(
+        email: emailController.text,
+        password: passwordController.text,
+        name: nameController.text,
       );
-    } else {
+
       setState(() {
         isLoading = false;
       });
-      showSnackBar(context, res);
+
+      if (res == "success") {
+        // Navigate to another page or show success message
+        Navigator.of(context)
+            .pushReplacementNamed('/home'); // Adjust route as needed
+      } else {
+        // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(res)),
+        );
+      }
     }
   }
 
@@ -78,22 +73,21 @@ class _LoginPagesState extends State<LoginPages> {
                         child: Container(
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              bottomLeft: Radius.circular(20),
-                            ),
+                                topLeft: Radius.circular(20),
+                                bottomLeft: Radius.circular(20)),
                             color: Colors.white,
                           ),
                           height: 500,
                           width: size.width,
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 90),
+                            padding: const EdgeInsets.only(top: 60),
                             child: Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 50),
                               child: Column(
                                 children: [
                                   const Text(
-                                    'Login',
+                                    'Register',
                                     style: TextStyle(
                                         fontSize: 20.0,
                                         fontWeight: FontWeight.bold),
@@ -105,12 +99,26 @@ class _LoginPagesState extends State<LoginPages> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 50),
                                     child: CrTextField(
-                                      controller: emailController,
-                                      hintText: 'Email or Phone',
-                                      prefixIcon: const Icon(Icons.email,
-                                          color: Colors.orange),
-                                      validator: Validator.email,
+                                      controller: nameController,
+                                      focusNode: nameFocus,
+                                      hintText: 'Full Name',
+                                      prefixIcon: const Icon(Icons.person,
+                                          color: AppColor.grey),
                                       textInputAction: TextInputAction.next,
+                                      validator: Validator.required,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20.0),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 50),
+                                    child: CrTextField(
+                                      controller: emailController,
+                                      hintText: 'Email',
+                                      prefixIcon: const Icon(Icons.email,
+                                          color: AppColor.grey),
+                                      textInputAction: TextInputAction.next,
+                                      validator: Validator.email,
                                     ),
                                   ),
                                   const SizedBox(height: 20.0),
@@ -120,8 +128,21 @@ class _LoginPagesState extends State<LoginPages> {
                                     child: CrTextFieldPassword(
                                       controller: passwordController,
                                       hintText: 'Password',
+                                      textInputAction: TextInputAction.next,
                                       validator: Validator.password,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20.0),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 50),
+                                    child: CrTextFieldPassword(
+                                      controller: confirmPasswordController,
+                                      onChanged: (_) => setState(() {}),
+                                      hintText: 'Confirm Password',
                                       textInputAction: TextInputAction.done,
+                                      validator: Validator.confirmPassword(
+                                          passwordController.text),
                                     ),
                                   ),
                                   const SizedBox(height: 20.0),
@@ -129,10 +150,11 @@ class _LoginPagesState extends State<LoginPages> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 50),
                                     child: CrElevatedButton(
-                                      onPressed: loginUser,
+                                      onPressed: signUp,
                                       color: AppColor.blue,
                                       borderColor: AppColor.white,
-                                      text: isLoading ? 'Loading...' : 'Login',
+                                      text:
+                                          isLoading ? 'Loading...' : 'Register',
                                     ),
                                   )
                                 ],

@@ -156,13 +156,27 @@ class AddProduct extends StatelessWidget {
                                     flex: 4,
                                     child: Column(
                                       children: [
+                                        const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10.0),
+                                          child: Align(
+                                              alignment: Alignment.topLeft,
+                                              child: Text(
+                                                'Image',
+                                                style: TextStyle(
+                                                    fontSize: 18.6,
+                                                    fontWeight:
+                                                        FontWeight.w300),
+                                              )),
+                                        ),
+                                        const SizedBox(height: 10),
                                         Container(
                                           width: 300,
                                           height: 300,
                                           decoration: BoxDecoration(
                                               color: Colors.white,
                                               borderRadius:
-                                                  BorderRadius.circular(20.0)),
+                                                  BorderRadius.circular(10.0)),
                                           child: const Icon(
                                             Icons.add_a_photo_outlined,
                                             size: 100,

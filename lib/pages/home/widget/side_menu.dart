@@ -1,18 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Thêm import Firebase Authentication
 import 'package:web_admin_car/gen/assets.gen.dart';
+import 'package:web_admin_car/pages/auth/login_pages.dart';
 import 'package:web_admin_car/pages/home_page_main.dart';
 import 'package:web_admin_car/pages/home/widget/dashboard_list_tile.dart';
 import 'package:web_admin_car/pages/manage_seller/category/category_page.dart';
 import 'package:web_admin_car/pages/manage_seller/product/product.dart';
 import 'package:web_admin_car/resources/app_color.dart';
+import 'package:web_admin_car/services/auth_services.dart';
 
-class SideMenu extends StatelessWidget {
+class SideMenu extends StatefulWidget {
   final Function(Widget) onMenuItemPressed;
 
   const SideMenu({
     super.key,
     required this.onMenuItemPressed,
   });
+
+  @override
+  State<SideMenu> createState() => _SideMenuState();
+}
+
+class _SideMenuState extends State<SideMenu> {
+  final AuthService _authService = AuthService();
+  // Tạo thể hiện của AuthService
+  String? userName;
+  Future<void> _logout(BuildContext context) async {
+    await _authService.signOut();
+    if (mounted) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+            builder: (context) =>
+                const LoginPages()), // Điều hướng đến trang đăng nhập
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,39 +53,39 @@ class SideMenu extends StatelessWidget {
           DashboardListTile(
             tiltle: 'Home',
             onPress: () {
-              onMenuItemPressed(const HomePageMain());
+              widget.onMenuItemPressed(const HomePageMain());
             },
             svgAssetPath: Assets.icons.contentViewThumbnailsIcon,
           ),
           DashboardListTile(
             tiltle: 'Profile',
             onPress: () {
-              onMenuItemPressed(const Center(child: Text("Profile Page")));
+              widget
+                  .onMenuItemPressed(const Center(child: Text("Profile Page")));
             },
             svgAssetPath: Assets.icons.registrationIcon,
           ),
-          Product(onMenuItemPressed: onMenuItemPressed, size: size),
-          CategoryPage(onMenuItemPressed: onMenuItemPressed, size: size),
+          Product(onMenuItemPressed: widget.onMenuItemPressed, size: size),
+          CategoryPage(onMenuItemPressed: widget.onMenuItemPressed, size: size),
           DashboardListTile(
             tiltle: 'Order',
             onPress: () {
-              onMenuItemPressed(const Center(child: Text("Order Page")));
+              widget.onMenuItemPressed(const Center(child: Text("Order Page")));
             },
             svgAssetPath: Assets.icons.fileLineIcon,
           ),
           DashboardListTile(
             tiltle: 'Settings',
             onPress: () {
-              onMenuItemPressed(const Center(child: Text("Settings Page")));
+              widget.onMenuItemPressed(
+                  const Center(child: Text("Settings Page")));
             },
             svgAssetPath: Assets.icons.settingLineIcon,
           ),
           const Spacer(),
           DashboardListTile(
             tiltle: 'Logout',
-            onPress: () {
-              onMenuItemPressed(const Center(child: Text("Logout Page")));
-            },
+            onPress: () => _logout(context), // Gọi hàm logout khi nhấn vào
             svgAssetPath: Assets.icons.logoutLineIcon,
           ),
         ],
