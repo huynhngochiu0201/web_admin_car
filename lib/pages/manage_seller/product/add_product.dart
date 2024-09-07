@@ -4,13 +4,17 @@ import 'package:web_admin_car/components/text_field/cr_text_field.dart';
 import 'package:web_admin_car/resources/app_color.dart';
 
 class AddProduct extends StatelessWidget {
-  const AddProduct({
+  AddProduct({
     super.key,
     required this.size,
   });
 
   final Size size;
-
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+  final TextEditingController quantityController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -41,9 +45,6 @@ class AddProduct extends StatelessWidget {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 20.0),
                                         child: Column(
-                                          // mainAxisAlignment:
-                                          //     MainAxisAlignment
-                                          //         .start,
                                           children: [
                                             const Align(
                                               alignment: Alignment.topLeft,
@@ -56,7 +57,9 @@ class AddProduct extends StatelessWidget {
                                               ),
                                             ),
                                             const SizedBox(height: 10.0),
-                                            const CrTextField(),
+                                            CrTextField(
+                                              controller: nameController,
+                                            ),
                                             const SizedBox(height: 25.0),
                                             const Row(
                                               children: [
@@ -78,14 +81,21 @@ class AddProduct extends StatelessWidget {
                                               ],
                                             ),
                                             const SizedBox(height: 10.0),
-                                            const Row(
+                                            Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Expanded(child: CrTextField()),
-                                                SizedBox(width: 20.0),
-                                                Expanded(child: CrTextField()),
+                                                Expanded(
+                                                    child: CrTextField(
+                                                  controller: priceController,
+                                                )),
+                                                const SizedBox(width: 20.0),
+                                                Expanded(
+                                                    child: CrTextField(
+                                                  controller:
+                                                      quantityController,
+                                                )),
                                               ],
                                             ),
                                             const SizedBox(height: 25.0),
@@ -133,6 +143,8 @@ class AddProduct extends StatelessWidget {
                                                 padding:
                                                     const EdgeInsets.all(10.0),
                                                 child: TextFormField(
+                                                  controller:
+                                                      descriptionController,
                                                   maxLines:
                                                       10, // Cho phép nhập nhiều dòng
                                                   decoration:

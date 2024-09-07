@@ -30,6 +30,7 @@ class AuthService {
         res = "success";
       }
     } catch (err) {
+      FirebaseAuthException;
       return err.toString();
     }
     return res;

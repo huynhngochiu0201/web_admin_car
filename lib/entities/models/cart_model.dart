@@ -5,6 +5,7 @@ class CartModel {
   final String productImage;
   final double productPrice;
   final int quantity;
+  final int size;
 
   CartModel({
     this.id,
@@ -13,6 +14,7 @@ class CartModel {
     required this.productImage,
     required this.productPrice,
     required this.quantity,
+    required this.size,
   });
 
   factory CartModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class CartModel {
       productImage: json['productImage'],
       productPrice: json['productPrice'],
       quantity: json['quantity'],
+      size: json['size'],
     );
   }
 
@@ -34,6 +37,7 @@ class CartModel {
       'productImage': productImage,
       'productPrice': productPrice,
       'quantity': quantity,
+      'size': size,
     };
   }
 }

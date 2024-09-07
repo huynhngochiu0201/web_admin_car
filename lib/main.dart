@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web_admin_car/firebase_options.dart';
 import 'package:web_admin_car/pages/auth/login_pages.dart';
+import 'package:web_admin_car/services/remote/category_service.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  // Uint8List
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -15,28 +16,32 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarBrightness: Brightness.light,
     statusBarIconBrightness: Brightness.dark,
   ));
-  runApp(const MyApp());
+
+  // Create an instance of CategoryService
+  final categoryService = CategoryService();
+
+  runApp(MyApp(categoryService: categoryService));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final CategoryService categoryService;
 
-  // This widget is the root of your application.
+  const MyApp({super.key, required this.categoryService});
+
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: LoginPages(),
+      home: LoginPages(
+        categoryService: categoryService,
+      ),
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Thêm import Firebase Authentication
+import 'package:web_admin_car/entities/models/category_model.dart';
 import 'package:web_admin_car/gen/assets.gen.dart';
 import 'package:web_admin_car/pages/auth/login_pages.dart';
 import 'package:web_admin_car/pages/home_page_main.dart';
@@ -8,13 +8,18 @@ import 'package:web_admin_car/pages/manage_seller/category/category_page.dart';
 import 'package:web_admin_car/pages/manage_seller/product/product.dart';
 import 'package:web_admin_car/resources/app_color.dart';
 import 'package:web_admin_car/services/auth_services.dart';
+import 'package:web_admin_car/services/remote/category_service.dart';
 
 class SideMenu extends StatefulWidget {
   final Function(Widget) onMenuItemPressed;
+  final CategoryService categoryService;
+  final CategoryModel categoryModel;
 
   const SideMenu({
     super.key,
     required this.onMenuItemPressed,
+    required this.categoryService,
+    required this.categoryModel,
   });
 
   @override
@@ -30,8 +35,10 @@ class _SideMenuState extends State<SideMenu> {
     if (mounted) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-            builder: (context) =>
-                const LoginPages()), // Điều hướng đến trang đăng nhập
+            builder: (context) => LoginPages(
+                  categoryModel: widget.categoryModel,
+                  categoryService: widget.categoryService,
+                )),
       );
     }
   }
@@ -66,7 +73,11 @@ class _SideMenuState extends State<SideMenu> {
             svgAssetPath: Assets.icons.registrationIcon,
           ),
           Product(onMenuItemPressed: widget.onMenuItemPressed, size: size),
-          CategoryPage(onMenuItemPressed: widget.onMenuItemPressed, size: size),
+          CategoryPage(
+            onMenuItemPressed: widget.onMenuItemPressed,
+            size: size,
+            categoryService: widget.categoryService,
+          ),
           DashboardListTile(
             tiltle: 'Order',
             onPress: () {

@@ -8,6 +8,7 @@ class ProductModel {
   final String image;
   final double price;
   final String description;
+  final List<int> sizes;
   final int viewCount;
   final int orderCount;
   final int quantity;
@@ -21,6 +22,7 @@ class ProductModel {
       required this.image,
       required this.price,
       required this.description,
+      required this.sizes,
       required this.viewCount,
       required this.orderCount,
       this.favourute,
@@ -35,6 +37,7 @@ class ProductModel {
         image: json['image'],
         price: json['price'],
         description: json['description'],
+        sizes: json['sizes'].cast<int>(),
         viewCount: json['viewCount'],
         orderCount: json['orderCount'],
         quantity: json['quantity'],
@@ -49,6 +52,7 @@ class ProductModel {
         'image': image,
         'price': price,
         'description': description,
+        'sizes': sizes,
         'viewCount': math.Random().nextInt(1000),
         'orderCount': math.Random().nextInt(1000),
         'quantity': quantity,

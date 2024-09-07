@@ -3,13 +3,18 @@ import 'package:web_admin_car/components/button/cr_elevated_button.dart';
 import 'package:web_admin_car/components/snack_bar/show_snack_bar.dart';
 import 'package:web_admin_car/components/text_field/cr_text_field.dart';
 import 'package:web_admin_car/components/text_field/cr_text_field_password.dart';
+import 'package:web_admin_car/entities/models/category_model.dart';
 import 'package:web_admin_car/pages/home/home_page.dart';
 import 'package:web_admin_car/resources/app_color.dart';
 import 'package:web_admin_car/services/auth_services.dart';
+import 'package:web_admin_car/services/remote/category_service.dart';
 import 'package:web_admin_car/utils/validator.dart';
 
 class LoginPages extends StatefulWidget {
-  const LoginPages({super.key});
+  final CategoryService categoryService;
+  final CategoryModel? categoryModel;
+  const LoginPages(
+      {super.key, required this.categoryService, this.categoryModel});
 
   @override
   State<LoginPages> createState() => _LoginPagesState();
@@ -47,7 +52,11 @@ class _LoginPagesState extends State<LoginPages> {
       });
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const HomePage(),
+          builder: (context) => HomePage(
+            categoryModel: widget.categoryModel ??
+                CategoryModel(id: '1', name: '', image: ''),
+            categoryService: widget.categoryService,
+          ),
         ),
       );
     } else {
