@@ -102,148 +102,155 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 250, vertical: 150),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                bottomLeft: Radius.circular(20)),
-                            color: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: FittedBox(
+                    child: SizedBox(
+                      width: 800,
+                      height: 600,
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    bottomLeft: Radius.circular(20)),
+                                color: Colors.white,
+                              ),
+                              height: 500,
+                              width: size.width,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 60),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 50),
+                                  child: Column(
+                                    children: [
+                                      const Text(
+                                        'Register',
+                                        style: TextStyle(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      const Text(
+                                          "Welcome to car rescue's management page"),
+                                      const SizedBox(height: 20.0),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 50),
+                                        child: CrTextField(
+                                          controller: nameController,
+                                          hintText: 'Full Name',
+                                          prefixIcon: const Icon(Icons.person,
+                                              color: AppColor.grey),
+                                          textInputAction: TextInputAction.next,
+                                          validator: Validator.required,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20.0),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 50),
+                                        child: CrTextField(
+                                          controller: emailController,
+                                          hintText: 'Email',
+                                          prefixIcon: const Icon(Icons.email,
+                                              color: AppColor.grey),
+                                          textInputAction: TextInputAction.next,
+                                          validator: Validator.email,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20.0),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 50),
+                                        child: CrTextFieldPassword(
+                                          controller: passwordController,
+                                          hintText: 'Password',
+                                          textInputAction: TextInputAction.next,
+                                          validator: Validator.password,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20.0),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 50),
+                                        child: CrTextFieldPassword(
+                                          controller: confirmPasswordController,
+                                          onChanged: (_) => setState(() {}),
+                                          hintText: 'Confirm Password',
+                                          textInputAction: TextInputAction.done,
+                                          validator: Validator.confirmPassword(
+                                              passwordController.text),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20.0),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 50),
+                                        child: CrElevatedButton(
+                                          onPressed: () => _onSubmit(context),
+                                          color: AppColor.blue,
+                                          borderColor: AppColor.white,
+                                          text: isLoading
+                                              ? 'Loading...'
+                                              : 'Register',
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                          height: 500,
-                          width: size.width,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 60),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 50),
-                              child: Column(
+                          Flexible(
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomLeft,
+                                  colors: [
+                                    Color(0xFF5038ED),
+                                    Color(0xFF9181F4),
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
+                                ),
+                              ),
+                              height: 500,
+                              width: size.width,
+                              child: Stack(
                                 children: [
-                                  const Text(
-                                    'Register',
-                                    style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  const Text(
-                                      "Welcome to car rescue's management page"),
-                                  const SizedBox(height: 20.0),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 50),
-                                    child: CrTextField(
-                                      controller: nameController,
-                                      hintText: 'Full Name',
-                                      prefixIcon: const Icon(Icons.person,
-                                          color: AppColor.grey),
-                                      textInputAction: TextInputAction.next,
-                                      validator: Validator.required,
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(20),
+                                      bottomRight: Radius.circular(20),
+                                    ),
+                                    child: Image.asset(
+                                      'assets/images/Rectangle.png',
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
-                                  const SizedBox(height: 20.0),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 50),
-                                    child: CrTextField(
-                                      controller: emailController,
-                                      hintText: 'Email',
-                                      prefixIcon: const Icon(Icons.email,
-                                          color: AppColor.grey),
-                                      textInputAction: TextInputAction.next,
-                                      validator: Validator.email,
+                                  Center(
+                                    child: Positioned(
+                                      child: Image.asset(
+                                        'assets/images/Autocarlogo.png',
+                                        width: 450,
+                                        height: 450,
+                                      ),
                                     ),
                                   ),
-                                  const SizedBox(height: 20.0),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 50),
-                                    child: CrTextFieldPassword(
-                                      controller: passwordController,
-                                      hintText: 'Password',
-                                      textInputAction: TextInputAction.next,
-                                      validator: Validator.password,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20.0),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 50),
-                                    child: CrTextFieldPassword(
-                                      controller: confirmPasswordController,
-                                      onChanged: (_) => setState(() {}),
-                                      hintText: 'Confirm Password',
-                                      textInputAction: TextInputAction.done,
-                                      validator: Validator.confirmPassword(
-                                          passwordController.text),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20.0),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 50),
-                                    child: CrElevatedButton(
-                                      onPressed: () => _onSubmit(context),
-                                      color: AppColor.blue,
-                                      borderColor: AppColor.white,
-                                      text:
-                                          isLoading ? 'Loading...' : 'Register',
-                                    ),
-                                  )
                                 ],
                               ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                      Expanded(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomLeft,
-                              colors: [
-                                Color(0xFF5038ED),
-                                Color(0xFF9181F4),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(20),
-                              bottomRight: Radius.circular(20),
-                            ),
-                          ),
-                          height: 500,
-                          width: size.width,
-                          child: Stack(
-                            children: [
-                              ClipRRect(
-                                borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(20),
-                                  bottomRight: Radius.circular(20),
-                                ),
-                                child: Image.asset(
-                                  'assets/images/Rectangle.png',
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Center(
-                                child: Positioned(
-                                  child: Image.asset(
-                                    'assets/images/Autocarlogo.png',
-                                    width: 450,
-                                    height: 450,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ],

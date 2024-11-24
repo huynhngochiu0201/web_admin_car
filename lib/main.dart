@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web_admin_car/firebase_options.dart';
-import 'package:web_admin_car/pages/auth/login_pages.dart';
+import 'package:web_admin_car/pages/auth/register_pages.dart';
 import 'package:web_admin_car/services/shared_prefs.dart';
 
 void main() async {
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: LoginPages(),
+      home: RegisterPage(),
     );
   }
 }

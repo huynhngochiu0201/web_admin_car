@@ -23,12 +23,6 @@ class HomePageState extends State<HomePage> {
         padding: EdgeInsets.all(AppColor.defaultPadding * 1.5),
         child: Row(
           children: [
-            // Expanded(
-            //   flex: 2,
-            //   child: SideMenu(
-            //     onMenuItemPressed: _onMenuItemPressed,
-            //   ),
-            // ),
             const SizedBox(
               width: 10.0,
             ),
