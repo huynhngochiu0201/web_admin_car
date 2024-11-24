@@ -1,163 +1,63 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:web_admin_car/constants/define_collection.dart';
-import 'package:web_admin_car/entities/models/add_product_model.dart';
 import 'package:web_admin_car/entities/models/product_model.dart';
-import 'package:web_admin_car/entities/models/update_product_model.dart';
+import '../../constants/define_collection.dart';
 
 class ProductService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseStorage storage = FirebaseStorage.instance;
-  Future<void> updateProduct(UpdateProductModel product) async {
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  Future<List<ProductModel>> fetchProducts() async {
     try {
-      String idImage = product.productId!;
-      String imageStoragePath =
-          '/${AppDefineCollection.APP_PRODUCT}/${product.cateId}/$idImage';
-
-      final Map<String, dynamic> productData = product.toJson();
-      if (product.image != null) {
-        final Reference ref = storage.ref().child(imageStoragePath);
-        final UploadTask uploadTask = ref.putBlob(product.image!);
-        final TaskSnapshot downloadUrl = await uploadTask;
-        final String imageUrl = await downloadUrl.ref.getDownloadURL();
-        productData['image'] = imageUrl;
-      }
-
-      await _firestore
-          .collection(AppDefineCollection.APP_PRODUCT)
-          .doc(product.productId)
-          .update(productData);
-    } catch (e) {
-      throw Exception('Error updating product: $e');
-    }
-  }
-
-  Future<void> addNewProduct(AddProductModel product) async {
-    try {
-      String docId =
-          _firestore.collection(AppDefineCollection.APP_PRODUCT).doc().id;
-      String imageStoragePath =
-          '/${AppDefineCollection.APP_PRODUCT}/${product.cateId}/$docId'; // Thay đổi ở đây
-      List<int> sizes = [];
-      for (int i = product.minSize; i <= product.maxSize; i++) {
-        sizes.add(i);
-      }
-      final Reference ref = storage.ref().child(imageStoragePath);
-      final UploadTask uploadTask = ref.putBlob(product.image);
-      final TaskSnapshot downloadUrl = await uploadTask;
-      final String imageUrl = await downloadUrl.ref.getDownloadURL();
-
-      await _firestore
-          .collection(AppDefineCollection.APP_PRODUCT)
-          .doc(docId)
-          .set(ProductModel(
-            id: docId,
-            categoryId: product.cateId,
-            name: product.productName,
-            image: imageUrl,
-            price: product.price,
-            description: product.desctiption,
-            sizes: sizes,
-            viewCount: 0,
-            orderCount: 0,
-            favourute: 0,
-            quantity: product.quantity,
-            createAt: Timestamp.now(),
-          ).toJson());
-    } catch (e) {
-      throw Exception('Error adding new product: $e');
-    }
-  }
-
-  Future<List<ProductModel>> fetchAllProductsByCreateAt() async {
-    try {
-      final querySnapshot = await _firestore
-          .collection(AppDefineCollection.APP_PRODUCT)
-          .orderBy('createAt', descending: true)
-          .get();
-      return querySnapshot.docs
+      final snapshot =
+          await _db.collection(AppDefineCollection.APP_PRODUCT).get();
+      return snapshot.docs
           .map((doc) => ProductModel.fromJson(doc.data()))
           .toList();
     } catch (e) {
-      throw Exception('Error fetching products by category: $e');
+      throw Exception('Failed to fetch products: $e');
     }
   }
 
-  Future<List<ProductModel>> fetchBestSalerProducts() async {
+  Future<void> addProduct(ProductModel product) async {
     try {
-      final querySnapshot = await _firestore
+      await _db
           .collection(AppDefineCollection.APP_PRODUCT)
-          .orderBy('orderCount', descending: true)
-          .get();
-      return querySnapshot.docs
-          .map((doc) => ProductModel.fromJson(doc.data()))
-          .toList();
+          .add(product.toJson());
     } catch (e) {
-      throw Exception('Error fetching best saler products: $e');
+      throw Exception('Failed to add product: $e');
     }
   }
 
-  Future<List<ProductModel>> fetchNewProducts() async {
+  Future<void> updateProduct(String id, ProductModel product) async {
     try {
-      final querySnapshot = await _firestore
-          .collection(AppDefineCollection.APP_PRODUCT)
-          .orderBy('createAt', descending: true)
-          .get();
-      return querySnapshot.docs
-          .map((doc) => ProductModel.fromJson(doc.data()))
-          .toList();
-    } catch (e) {
-      throw Exception('Error fetching new products: $e');
-    }
-  }
-
-  Future<List<ProductModel>> searchProducts(String searchText) async {
-    String searchTermLower = searchText.toLowerCase();
-
-    List<ProductModel> matchedProducts = [];
-
-    try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection(AppDefineCollection.APP_PRODUCT)
-          .get();
-      for (var doc in querySnapshot.docs) {
-        String nameLower = doc['name'].toLowerCase();
-        if (nameLower.contains(searchTermLower)) {
-          matchedProducts
-              .add(ProductModel.fromJson(doc.data() as Map<String, dynamic>));
-        }
-      }
-      return matchedProducts;
-    } catch (e) {
-      throw Exception('Error searching products: $e');
-    }
-  }
-
-  Future<void> deleteProductById(String id) async {
-    try {
-      await _firestore
+      await _db
           .collection(AppDefineCollection.APP_PRODUCT)
           .doc(id)
-          .delete();
+          .update(product.toJson());
     } catch (e) {
-      throw Exception('Error deleting product: $e');
+      throw Exception('Failed to update product: $e');
     }
   }
 
-  Future<void> deleteProductByIdCate(String idCate) async {
+  Future<void> deleteProduct(String id) async {
     try {
-      final querySnapshot = await _firestore
-          .collection(AppDefineCollection.APP_PRODUCT)
-          .where('categoryId', isEqualTo: idCate)
-          .get();
-      for (var doc in querySnapshot.docs) {
-        await _firestore
-            .collection(AppDefineCollection.APP_PRODUCT)
-            .doc(doc.id)
-            .delete();
-      }
+      await _db.collection(AppDefineCollection.APP_PRODUCT).doc(id).delete();
     } catch (e) {
-      throw Exception('Error deleting products by category: $e');
+      throw Exception('Failed to delete product: $e');
+    }
+  }
+
+  Future<List<ProductModel>> fetchProductsByCategory(String categoryId) async {
+    try {
+      final querySnapshot = await _db
+          .collection(AppDefineCollection.APP_PRODUCT)
+          .where('categoryId', isEqualTo: categoryId)
+          .get();
+
+      return querySnapshot.docs
+          .map((doc) => ProductModel.fromJson(doc.data()))
+          .toList();
+    } catch (e) {
+      throw Exception('Failed to fetch products by category: $e');
     }
   }
 }

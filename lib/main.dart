@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web_admin_car/firebase_options.dart';
 import 'package:web_admin_car/pages/auth/login_pages.dart';
-import 'package:web_admin_car/services/remote/category_service.dart';
+import 'package:web_admin_car/services/shared_prefs.dart';
 
 void main() async {
-  // Uint8List
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.web,
   );
 
   SystemChrome.setPreferredOrientations([
@@ -22,26 +21,21 @@ void main() async {
     statusBarBrightness: Brightness.light,
     statusBarIconBrightness: Brightness.dark,
   ));
-
-  // Create an instance of CategoryService
-  final categoryService = CategoryService();
-
-  runApp(MyApp(categoryService: categoryService));
+  await SharedPrefs.initialise();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final CategoryService categoryService;
-
-  const MyApp({super.key, required this.categoryService});
+  const MyApp({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: LoginPages(
-        categoryService: categoryService,
-      ),
+      home: LoginPages(),
     );
   }
 }

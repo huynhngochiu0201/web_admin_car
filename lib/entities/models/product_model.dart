@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:math' as math;
 
 class ProductModel {
   final String id;
@@ -8,7 +7,6 @@ class ProductModel {
   final String image;
   final double price;
   final String description;
-  final List<int> sizes;
   final int viewCount;
   final int orderCount;
   final int quantity;
@@ -22,7 +20,6 @@ class ProductModel {
       required this.image,
       required this.price,
       required this.description,
-      required this.sizes,
       required this.viewCount,
       required this.orderCount,
       this.favourute,
@@ -35,9 +32,8 @@ class ProductModel {
         categoryId: json['categoryId'],
         name: json['name'],
         image: json['image'],
-        price: json['price'],
+        price: json['price'].toDouble(),
         description: json['description'],
-        sizes: json['sizes'].cast<int>(),
         viewCount: json['viewCount'],
         orderCount: json['orderCount'],
         quantity: json['quantity'],
@@ -52,11 +48,10 @@ class ProductModel {
         'image': image,
         'price': price,
         'description': description,
-        'sizes': sizes,
-        'viewCount': math.Random().nextInt(1000),
-        'orderCount': math.Random().nextInt(1000),
+        'viewCount': 0,
+        'orderCount': 0,
         'quantity': quantity,
-        'favourute': math.Random().nextInt(1000),
+        'favourute': 0,
         'createAt': Timestamp.now(),
       };
 }

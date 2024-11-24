@@ -1,23 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CategoryModel {
-  final String? id;
+class AreaModel {
+  final String id;
   final String? name;
-  final String? image;
+  final double? price;
   final Timestamp? createAt;
 
-  CategoryModel({
-    this.id,
+  AreaModel({
+    required this.id,
     this.name,
-    this.image,
+    this.price,
     this.createAt,
   });
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json) {
-    return CategoryModel(
+  factory AreaModel.fromJson(Map<String, dynamic> json) {
+    return AreaModel(
       id: json['id'] as String,
       name: json['name'] as String?,
-      image: json['image'] as String?,
+      price: json['price'] as double?,
       createAt: json['createAt'] as Timestamp?,
     );
   }
@@ -26,7 +26,7 @@ class CategoryModel {
     return {
       'id': id,
       'name': name,
-      'image': image,
+      'price': price,
       'createAt': createAt,
     };
   }

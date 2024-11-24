@@ -53,11 +53,11 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDUNyGwdplUvahAlqVv-ZygWT4cO-lDzrI',
-    appId: '1:52042163690:web:d9d0085da362f6577dbe93',
-    messagingSenderId: '52042163690',
-    projectId: 'notifications-flutter-4df61',
-    authDomain: 'notifications-flutter-4df61.firebaseapp.com',
-    storageBucket: 'notifications-flutter-4df61.appspot.com',
+    apiKey: 'AIzaSyAewOj8KSxe9iyw151GPg9gVLBaCMHzCNU',
+    appId: '1:966510429635:web:53962dd50e670f4e046976',
+    messagingSenderId: '966510429635',
+    projectId: 'app-car-rescue',
+    authDomain: 'app-car-rescue.firebaseapp.com',
+    storageBucket: 'app-car-rescue.appspot.com',
   );
 }

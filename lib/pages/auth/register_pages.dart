@@ -1,10 +1,16 @@
+import 'dart:developer' as dev;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:web_admin_car/components/button/cr_elevated_button.dart';
 import 'package:web_admin_car/components/text_field/cr_text_field.dart';
 import 'package:web_admin_car/components/text_field/cr_text_field_password.dart';
+import 'package:web_admin_car/pages/auth/login_pages.dart';
 import 'package:web_admin_car/resources/app_color.dart';
-import 'package:web_admin_car/services/auth_services.dart';
 import 'package:web_admin_car/utils/validator.dart';
+import 'package:web_admin_car/entities/models/user_model.dart';
+import '../../components/snack_bar/td_snack_bar.dart';
+import '../../components/snack_bar/top_snack_bar.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -18,39 +24,70 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-  FocusNode nameFocus = FocusNode();
-  bool isChecked = false;
   final formKey = GlobalKey<FormState>();
+
   bool isLoading = false;
-  final AuthService authMethod = AuthService(); // Initialize AuthService
 
-  void signUp() async {
-    if (formKey.currentState!.validate()) {
-      setState(() {
-        isLoading = true;
-      });
+  final _auth = FirebaseAuth.instance;
 
-      String res = await authMethod.signupUser(
-        email: emailController.text,
-        password: passwordController.text,
-        name: nameController.text,
+  // tao tham chieu den collection task luu tru trong firebase
+  // de add, update, delete
+  CollectionReference userCollection =
+      FirebaseFirestore.instance.collection('users'); // tham chieu
+
+  Future<void> _onSubmit(BuildContext context) async {
+    if (formKey.currentState!.validate() == false) {
+      return;
+    }
+
+    setState(() => isLoading = true);
+
+    _auth
+        .createUserWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text)
+        .then((value) async {
+      UserModel user = UserModel()
+        ..name = nameController.text.trim()
+        ..email = emailController.text.trim();
+
+      _addUser(user);
+
+      if (!context.mounted) return;
+
+      showTopSnackBar(
+        context,
+        const TDSnackBar.success(
+            message: 'Register successfully, please login 😍'),
       );
 
-      setState(() {
-        isLoading = false;
-      });
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => LoginPages(
+            email: emailController.text.trim(),
+          ),
+        ),
+        (Route<dynamic> route) => false,
+      );
+    }).catchError((onError) {
+      FirebaseAuthException a = onError as FirebaseAuthException;
+      showTopSnackBar(
+        context,
+        TDSnackBar.error(message: a.message ?? ''),
+      );
+    }).whenComplete(() {
+      setState(() => isLoading = false);
+    });
+  }
 
-      if (res == "success") {
-        // Navigate to another page or show success message
-        Navigator.of(context)
-            .pushReplacementNamed('/home'); // Adjust route as needed
-      } else {
-        // Show error message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(res)),
-        );
-      }
-    }
+  void _addUser(UserModel user) {
+    userCollection
+        .doc(user.email)
+        .set(user.toJson())
+        .then((_) {})
+        .catchError((error) {
+      dev.log("Failed to add Task: $error");
+    });
   }
 
   @override
@@ -100,7 +137,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                         horizontal: 50),
                                     child: CrTextField(
                                       controller: nameController,
-                                      focusNode: nameFocus,
                                       hintText: 'Full Name',
                                       prefixIcon: const Icon(Icons.person,
                                           color: AppColor.grey),
@@ -150,7 +186,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 50),
                                     child: CrElevatedButton(
-                                      onPressed: signUp,
+                                      onPressed: () => _onSubmit(context),
                                       color: AppColor.blue,
                                       borderColor: AppColor.white,
                                       text:

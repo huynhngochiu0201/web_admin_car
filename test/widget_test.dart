@@ -27,20 +27,17 @@
 //     expect(find.text('0'), findsNothing);
 //     expect(find.text('1'), findsOneWidget);
 //   });
-// }
-
+// }y
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:web_admin_car/main.dart';
-import 'package:web_admin_car/services/remote/category_service.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Create a mock instance of CategoryService
-    final categoryService = CategoryService();
+    // final categoryService = CategoryService();
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp(categoryService: categoryService));
+    // await tester.pumpWidget(MyApp(categoryService: categoryService));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
