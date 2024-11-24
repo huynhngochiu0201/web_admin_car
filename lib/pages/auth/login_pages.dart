@@ -8,7 +8,7 @@ import 'package:web_admin_car/components/snack_bar/top_snack_bar.dart';
 import 'package:web_admin_car/components/text_field/cr_text_field.dart';
 import 'package:web_admin_car/components/text_field/cr_text_field_password.dart';
 import 'package:web_admin_car/entities/models/user_model.dart';
-import 'package:web_admin_car/pages/home/home_page.dart';
+import 'package:web_admin_car/pages/home_page.dart';
 import 'package:web_admin_car/resources/app_color.dart';
 import 'package:web_admin_car/services/shared_prefs.dart';
 import 'package:web_admin_car/utils/validator.dart';
